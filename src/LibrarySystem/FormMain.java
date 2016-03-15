@@ -36,14 +36,17 @@ public class FormMain extends javax.swing.JFrame {
         searchtab = new javax.swing.JPanel();
         searchTextField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        searchList = new javax.swing.JList();
         requestButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        searchTable = new javax.swing.JTable();
         userNameLebel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 0, 0));
+
+        libraryPannel.setBackground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout myLibraryTabLayout = new javax.swing.GroupLayout(myLibraryTab);
         myLibraryTab.setLayout(myLibraryTabLayout);
@@ -84,7 +87,8 @@ public class FormMain extends javax.swing.JFrame {
 
         libraryPannel.addTab("Reading List", reabingTab);
 
-        searchTextField.setText("Search");
+        searchtab.setBackground(new java.awt.Color(153, 153, 153));
+
         searchTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchTextFieldActionPerformed(evt);
@@ -93,32 +97,48 @@ public class FormMain extends javax.swing.JFrame {
 
         searchButton.setText("Search");
 
-        jScrollPane1.setViewportView(searchList);
-
         requestButton.setText("Request");
 
         jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         jLabel1.setText("Library search");
 
+        searchTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Title", "Author", "Edition", "ISBN", "Publisher"
+            }
+        ));
+        jScrollPane2.setViewportView(searchTable);
+
         javax.swing.GroupLayout searchtabLayout = new javax.swing.GroupLayout(searchtab);
         searchtab.setLayout(searchtabLayout);
         searchtabLayout.setHorizontalGroup(
             searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(searchtabLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchtabLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchtabLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(requestButton)
+                        .addGap(26, 26, 26))
                     .addGroup(searchtabLayout.createSequentialGroup()
-                        .addGap(83, 83, 83)
+                        .addGap(291, 291, 291)
+                        .addComponent(jLabel1)
+                        .addContainerGap(497, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchtabLayout.createSequentialGroup()
                         .addGroup(searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(searchTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(77, 77, 77)
-                        .addGroup(searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(searchButton)
-                            .addComponent(requestButton)))
-                    .addGroup(searchtabLayout.createSequentialGroup()
-                        .addGap(374, 374, 374)
-                        .addComponent(jLabel1)))
-                .addContainerGap(122, Short.MAX_VALUE))
+                            .addGroup(searchtabLayout.createSequentialGroup()
+                                .addGap(83, 83, 83)
+                                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(searchButton))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 772, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(97, 97, 97))))
         );
         searchtabLayout.setVerticalGroup(
             searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,10 +150,10 @@ public class FormMain extends javax.swing.JFrame {
                     .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(requestButton))
-                .addContainerGap(146, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addComponent(requestButton)
+                .addGap(22, 22, 22))
         );
 
         libraryPannel.addTab("Search", searchtab);
@@ -176,7 +196,10 @@ public class FormMain extends javax.swing.JFrame {
     
     public void setUser(User lUser) {
         user = lUser;
-        userNameLebel.setText(user.getUserName() +" "+ user.getUserLastName());
+        userNameLebel.setText(user.getUserName().substring(0, 1).toUpperCase() + user.getUserName().substring(1) +" "
+                + ""+ user.getUserLastName().substring(0, 1).toUpperCase() + user.getUserLastName().substring(1));
+        
+        
     }
     /**
      * @param args the command line arguments
@@ -217,14 +240,14 @@ public class FormMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane libraryPannel;
     private javax.swing.JPanel myLibraryTab;
     private javax.swing.JPanel reabingTab;
     private javax.swing.JButton requestButton;
     private javax.swing.JPanel requestTab;
     private javax.swing.JButton searchButton;
-    private javax.swing.JList searchList;
+    private javax.swing.JTable searchTable;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JPanel searchtab;
     private javax.swing.JLabel userNameLebel;
