@@ -5,13 +5,21 @@
  */
 package LibrarySystem;
 
+import java.sql.Array;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import static jdk.nashorn.internal.objects.NativeString.search;
+
 /**
  *
  * @author Jurijs
  */
 public class FormMain extends javax.swing.JFrame {
 
-    private User user = new User(" userN", " userL" , "user" , 0);
+    private User user = new User(" userN", " userL", "user", 0);
+
+    private Book book = new Book(" bTitle", "bAuthor", "bPublisher", "bPubDate", 0, 0);
+    Book[] books = new Book[2];
 
     /**
      * Creates new form FormMain
@@ -96,6 +104,11 @@ public class FormMain extends javax.swing.JFrame {
         });
 
         searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
 
         requestButton.setText("Request");
 
@@ -193,14 +206,28 @@ public class FormMain extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
-    
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+
+        DBManager dbm = new DBManager();       
+        
+        books[0] = book;
+        book[0] = dbm.searchByTitle(searchTextField.getText());
+        DefaultTableModel model = (DefaultTableModel) searchTable.getModel();
+
+        model.addRow(new Object[]{books[0].getBookTitle(), books[0].getBookAuthor(), books[0].getBookPublisher(), books[0].getBookPubDate(), books[0].getBookIsbn(), books[0].getBookEdition()});
+
+        dbm.searchByTitle(searchTextField.getText());
+        
+// TODO add your handling code here:
+    }//GEN-LAST:event_searchButtonActionPerformed
+
     public void setUser(User lUser) {
         user = lUser;
-        userNameLebel.setText(user.getUserName().substring(0, 1).toUpperCase() + user.getUserName().substring(1) +" "
-                + ""+ user.getUserLastName().substring(0, 1).toUpperCase() + user.getUserLastName().substring(1));
-        
-        
+        userNameLebel.setText(user.getUserName().substring(0, 1).toUpperCase() + user.getUserName().substring(1) + " "
+                + "" + user.getUserLastName().substring(0, 1).toUpperCase() + user.getUserLastName().substring(1));
+
     }
+
     /**
      * @param args the command line arguments
      */
@@ -232,7 +259,7 @@ public class FormMain extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FormMain().setVisible(true);
-                
+
             }
         });
     }
