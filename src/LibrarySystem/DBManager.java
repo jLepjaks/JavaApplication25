@@ -124,14 +124,20 @@ public class DBManager {
         }
     }
 
-    public String searchByTitle(String title) {
-
+  
+    public Book[] searchByTitle(String title) {
+        int counter = 0;
+        Book[] books = new Book[1000];        
         String bookIsbn = "";
         String bookTitle = "";
         String bookAuthor = "";
         String bookPublisher = "";
-        String bookEdition = "";
-        String searchTitle = "SELECT isbn, title, author, publisher, edition FROM books WHERE title = '" + title + "'";
+        int bookEdition = 0;
+        String bookAvaliable ="";
+        int bookLoantime = 0;
+        Date bookPubDate;
+        String searchTitle = "SELECT title, author, publisher, edition, isbn, pubDate, loantime, avaliable   FROM books WHERE title LIKE '" +"%"+ title +"%"+ "'";
+        
         runQuery(searchTitle);
 
         try { //Try to read the query Result Set
@@ -141,15 +147,22 @@ public class DBManager {
                 bookTitle = result.getString("title");
                 bookAuthor = result.getString("author");
                 bookPublisher = result.getString("publisher");
-                bookEdition = result.getString("edition");
-
+                bookEdition = Integer.parseInt(result.getString("edition"));
+                bookAvaliable = result.getString("avaliable");
+                bookLoantime = Integer.parseInt(result.getString("loanTime"));
+                bookPubDate = result.getDate("pubDate");
+                
+                books[counter] = new Book(bookTitle, bookAuthor, bookPublisher, bookAvaliable, bookIsbn, bookEdition, bookLoantime, bookPubDate);
+                counter ++;
+                
+                
                 System.out.println("isbn: " + bookIsbn + ", title:" + bookTitle + ", author: " + bookAuthor
                         + ", publisher: " + bookPublisher + ", edition: " + bookEdition);
             }
         } catch (SQLException e) {
             System.out.println("ERROR @adminReadDB: Cannot execute query.");
         }
-        return bookIsbn + " " + bookTitle + " " + bookAuthor  + " " + bookPublisher + " " + bookEdition ;
+        return books;
     }
 
     public String getPassword() {

@@ -5,62 +5,94 @@
  */
 package LibrarySystem;
 
+import java.sql.Date;
+
 /**
  *
  * @author Jurijs
  */
 public class Book {
 
-    private String title, author, publisher, pubDate;
-    private int isbn, edition;
+    private String title, author, publisher, avaliable, isbn;
+    private int edition, loantime ;
+    private Date pubDate;
+   
 
-    public Book(String bTitle, String bAuthor, String bPublisher, String bPubDate, int bIsbn, int bEdition) {
-
-        this.title = bTitle;
-        this.author = bAuthor;
-        this.publisher = bPublisher;
-        this.pubDate = bPubDate;
-        this.isbn = bIsbn;
-        this.edition = bEdition;
-
+    public Book(String title, String author, String publisher, String avaliable, String isbn, int edition, int loantime, Date pubDate) {
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.avaliable = avaliable;
+        this.isbn = isbn;
+        this.edition = edition;
+        this.loantime = loantime;
+        this.pubDate = pubDate;
+    }
+  
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getBookTitle() {
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public void setAvaliable(String avaliable) {
+        this.avaliable = avaliable;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public void setEdition(int edition) {
+        this.edition = edition;
+    }
+
+    public void setLoantime(int loantime) {
+        this.loantime = loantime;
+    }
+
+    public void setPubDate(Date pubDate) {
+        this.pubDate = pubDate;
+    }
+
+    public String getTitle() {
         return title;
-
     }
 
-    public String getBookAuthor() {
-
+    public String getAuthor() {
         return author;
-
     }
 
-    public String getBookPublisher() {
-
+    public String getPublisher() {
         return publisher;
-
     }
 
-    public String getBookPubDate() {
-
-        return pubDate;
-
+    public String getAvaliable() {
+        return avaliable;
     }
 
-    public int getBookIsbn() {
-
+    public String getIsbn() {
         return isbn;
-
     }
 
-    public int getBookEdition() {
-
+    public int getEdition() {
         return edition;
-
     }
 
+    public int getLoantime() {
+        return loantime;
+    }
+
+    public Date getPubDate() {
+        return pubDate;
+    }
+ 
     @Override
     public String toString() {
 
