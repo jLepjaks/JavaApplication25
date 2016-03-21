@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import static jdk.nashorn.internal.objects.NativeString.search;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,7 +21,7 @@ public class FormMain extends javax.swing.JFrame {
 
     private User user = new User(" userN", " userL", "user", 0);
 
-    Book[] books;
+    ArrayList<Book> books;
 
     /**
      * Creates new form FormMain
@@ -40,8 +41,21 @@ public class FormMain extends javax.swing.JFrame {
 
         libraryPannel = new javax.swing.JTabbedPane();
         myLibraryTab = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        myLibraryTable = new javax.swing.JTable();
+        myLibraryRequestButton = new javax.swing.JButton();
+        myLibraryRemoveButton = new javax.swing.JButton();
         requestTab = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        requestsTable = new javax.swing.JTable();
+        requestListRemoveButton = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        readingListRequestButton = new javax.swing.JButton();
         reabingTab = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        readingListTable = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
         searchtab = new javax.swing.JPanel();
         searchTextField = new javax.swing.JTextField();
         searchButton = new javax.swing.JButton();
@@ -57,41 +71,149 @@ public class FormMain extends javax.swing.JFrame {
 
         libraryPannel.setBackground(new java.awt.Color(0, 0, 0));
 
+        jLabel5.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        jLabel5.setText("My Library");
+
+        myLibraryTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title", "Author", "Gender", "Date borrowed", "Date returned", "Avaliability"
+            }
+        ));
+        myLibraryTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane4.setViewportView(myLibraryTable);
+
+        myLibraryRequestButton.setText("Request");
+        myLibraryRequestButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                myLibraryRequestButtonActionPerformed(evt);
+            }
+        });
+
+        myLibraryRemoveButton.setText("Remove");
+
         javax.swing.GroupLayout myLibraryTabLayout = new javax.swing.GroupLayout(myLibraryTab);
         myLibraryTab.setLayout(myLibraryTabLayout);
         myLibraryTabLayout.setHorizontalGroup(
             myLibraryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 952, Short.MAX_VALUE)
+            .addGroup(myLibraryTabLayout.createSequentialGroup()
+                .addGap(99, 99, 99)
+                .addGroup(myLibraryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 767, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(myLibraryTabLayout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(170, 170, 170)
+                        .addComponent(myLibraryRequestButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(myLibraryRemoveButton)))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
         myLibraryTabLayout.setVerticalGroup(
             myLibraryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(myLibraryTabLayout.createSequentialGroup()
+                .addGap(53, 53, 53)
+                .addGroup(myLibraryTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(myLibraryRequestButton)
+                    .addComponent(myLibraryRemoveButton))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         libraryPannel.addTab("Mylibrary", myLibraryTab);
+
+        requestsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title", "Author", "Gender", "Avaliability"
+            }
+        ));
+        requestsTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(requestsTable);
+
+        requestListRemoveButton.setText("Remove");
+
+        jLabel4.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        jLabel4.setText("Requests");
+
+        readingListRequestButton.setText("Request");
 
         javax.swing.GroupLayout requestTabLayout = new javax.swing.GroupLayout(requestTab);
         requestTab.setLayout(requestTabLayout);
         requestTabLayout.setHorizontalGroup(
             requestTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 952, Short.MAX_VALUE)
+            .addGroup(requestTabLayout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(57, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, requestTabLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(requestTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, requestTabLayout.createSequentialGroup()
+                        .addComponent(readingListRequestButton)
+                        .addGap(42, 42, 42)
+                        .addComponent(requestListRemoveButton)
+                        .addGap(185, 185, 185))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, requestTabLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(406, 406, 406))))
         );
         requestTabLayout.setVerticalGroup(
             requestTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, requestTabLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGroup(requestTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(requestListRemoveButton)
+                    .addComponent(readingListRequestButton))
+                .addGap(30, 30, 30))
         );
 
         libraryPannel.addTab("Requests", requestTab);
+
+        readingListTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Title", "Author", "Gender", "Date borrowed", "Due date"
+            }
+        ));
+        readingListTable.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(readingListTable);
+
+        jLabel3.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        jLabel3.setText("Reading List");
 
         javax.swing.GroupLayout reabingTabLayout = new javax.swing.GroupLayout(reabingTab);
         reabingTab.setLayout(reabingTabLayout);
         reabingTabLayout.setHorizontalGroup(
             reabingTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 952, Short.MAX_VALUE)
+            .addGroup(reabingTabLayout.createSequentialGroup()
+                .addGap(125, 125, 125)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 691, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(136, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, reabingTabLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(398, 398, 398))
         );
         reabingTabLayout.setVerticalGroup(
             reabingTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, reabingTabLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(138, Short.MAX_VALUE))
         );
 
         libraryPannel.addTab("Reading List", reabingTab);
@@ -131,41 +253,36 @@ public class FormMain extends javax.swing.JFrame {
         searchtab.setLayout(searchtabLayout);
         searchtabLayout.setHorizontalGroup(
             searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(searchtabLayout.createSequentialGroup()
+                .addGap(381, 381, 381)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchtabLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchtabLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(requestButton)
-                        .addGap(26, 26, 26))
-                    .addGroup(searchtabLayout.createSequentialGroup()
-                        .addGap(291, 291, 291)
-                        .addComponent(jLabel1)
-                        .addContainerGap(497, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchtabLayout.createSequentialGroup()
-                        .addGroup(searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(searchtabLayout.createSequentialGroup()
-                                .addGap(83, 83, 83)
-                                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(searchButton))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 772, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(97, 97, 97))))
+                .addGap(0, 83, Short.MAX_VALUE)
+                .addGroup(searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(requestButton)
+                    .addGroup(searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(searchtabLayout.createSequentialGroup()
+                            .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 562, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(125, 125, 125)
+                            .addComponent(searchButton))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 772, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(97, 97, 97))
         );
         searchtabLayout.setVerticalGroup(
             searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchtabLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(45, 45, 45)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59)
+                .addGap(52, 52, 52)
                 .addGroup(searchtabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(searchButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addComponent(requestButton)
-                .addGap(22, 22, 22))
+                .addGap(23, 23, 23))
         );
 
         libraryPannel.addTab("Search", searchtab);
@@ -213,14 +330,22 @@ public class FormMain extends javax.swing.JFrame {
 
         DefaultTableModel model = (DefaultTableModel) searchTable.getModel();
 
-        for (int i = 0; i < books.length; i++) {
+        
+        
+        for (int i = 0; i < books.size(); i++) {
 
-            model.addRow(new Object[]{books[i].getTitle(), books[i].getAuthor(), books[i].getEdition(), books[i].getIsbn(),
-                books[i].getPublisher(), books[i].getPubDate(), books[i].getLoantime(), books[i].getAvaliable()});
+            model.addRow(new Object[]{books.get(i).getTitle(),books.get(i).getAuthor(), books.get(i).getEdition(), books.get(i).getIsbn(),
+                books.get(i).getPublisher(), books.get(i).getPubDate(), books.get(i).getLoantime(), books.get(i).getAvaliable()});
 
         }
 
+        
+        
     }//GEN-LAST:event_searchButtonActionPerformed
+
+    private void myLibraryRequestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_myLibraryRequestButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_myLibraryRequestButtonActionPerformed
 
     public void setUser(User lUser) {
         user = lUser;
@@ -268,12 +393,25 @@ public class FormMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane libraryPannel;
+    private javax.swing.JButton myLibraryRemoveButton;
+    private javax.swing.JButton myLibraryRequestButton;
     private javax.swing.JPanel myLibraryTab;
+    private javax.swing.JTable myLibraryTable;
     private javax.swing.JPanel reabingTab;
+    private javax.swing.JButton readingListRequestButton;
+    private javax.swing.JTable readingListTable;
     private javax.swing.JButton requestButton;
+    private javax.swing.JButton requestListRemoveButton;
     private javax.swing.JPanel requestTab;
+    private javax.swing.JTable requestsTable;
     private javax.swing.JButton searchButton;
     private javax.swing.JTable searchTable;
     private javax.swing.JTextField searchTextField;
