@@ -12,6 +12,7 @@ package LibrarySystem;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -124,20 +125,19 @@ public class DBManager {
         }
     }
 
-  
-    public Book[] searchByTitle(String title) {
-        int counter = 0;
-        Book[] books = new Book[1000];        
+    public ArrayList<Book> searchByTitle(String title) {
+        int counter = 1;
+        ArrayList<Book> books = new ArrayList<Book>(counter);
         String bookIsbn = "";
         String bookTitle = "";
         String bookAuthor = "";
         String bookPublisher = "";
         int bookEdition = 0;
-        String bookAvaliable ="";
+        String bookAvaliable = "";
         int bookLoantime = 0;
         Date bookPubDate;
-        String searchTitle = "SELECT title, author, publisher, edition, isbn, pubDate, loantime, avaliable   FROM books WHERE title LIKE '" +"%"+ title +"%"+ "'";
-        
+        String searchTitle = "SELECT title, author, publisher, edition, isbn, pubDate, loantime, avaliable   FROM books WHERE title LIKE '" + "%" + title + "%" + "'";
+
         runQuery(searchTitle);
 
         try { //Try to read the query Result Set
@@ -151,11 +151,10 @@ public class DBManager {
                 bookAvaliable = result.getString("avaliable");
                 bookLoantime = Integer.parseInt(result.getString("loanTime"));
                 bookPubDate = result.getDate("pubDate");
-                
-                books[counter] = new Book(bookTitle, bookAuthor, bookPublisher, bookAvaliable, bookIsbn, bookEdition, bookLoantime, bookPubDate);
-                counter ++;
-                
-                
+
+                books.add(new Book(bookTitle, bookAuthor, bookPublisher, bookAvaliable, bookIsbn, bookEdition, bookLoantime, bookPubDate));
+                counter++;
+
                 System.out.println("isbn: " + bookIsbn + ", title:" + bookTitle + ", author: " + bookAuthor
                         + ", publisher: " + bookPublisher + ", edition: " + bookEdition);
             }
