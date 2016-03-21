@@ -9,6 +9,8 @@ import java.sql.Array;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import static jdk.nashorn.internal.objects.NativeString.search;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -18,8 +20,7 @@ public class FormMain extends javax.swing.JFrame {
 
     private User user = new User(" userN", " userL", "user", 0);
 
-    private Book book = new Book(" bTitle", "bAuthor", "bPublisher", "bPubDate", 0, 0);
-    Book[] books = new Book[2];
+    Book[] books;
 
     /**
      * Creates new form FormMain
@@ -117,15 +118,13 @@ public class FormMain extends javax.swing.JFrame {
 
         searchTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "Title", "Author", "Edition", "ISBN", "Publisher"
+                "Title", "Author", "Edition", "ISBN", "Publisher", "Publication Year", "Loan Time", "Avalability"
             }
         ));
+        searchTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(searchTable);
 
         javax.swing.GroupLayout searchtabLayout = new javax.swing.GroupLayout(searchtab);
@@ -208,17 +207,19 @@ public class FormMain extends javax.swing.JFrame {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
 
-        DBManager dbm = new DBManager();       
-        
-        books[0] = book;
-        book[0] = dbm.searchByTitle(searchTextField.getText());
+        DBManager dbm = new DBManager();
+
+        books = dbm.searchByTitle(searchTextField.getText());
+
         DefaultTableModel model = (DefaultTableModel) searchTable.getModel();
 
-        model.addRow(new Object[]{books[0].getBookTitle(), books[0].getBookAuthor(), books[0].getBookPublisher(), books[0].getBookPubDate(), books[0].getBookIsbn(), books[0].getBookEdition()});
+        for (int i = 0; i < books.length; i++) {
 
-        dbm.searchByTitle(searchTextField.getText());
-        
-// TODO add your handling code here:
+            model.addRow(new Object[]{books[i].getTitle(), books[i].getAuthor(), books[i].getEdition(), books[i].getIsbn(),
+                books[i].getPublisher(), books[i].getPubDate(), books[i].getLoantime(), books[i].getAvaliable()});
+
+        }
+
     }//GEN-LAST:event_searchButtonActionPerformed
 
     public void setUser(User lUser) {
