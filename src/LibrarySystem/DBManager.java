@@ -127,7 +127,7 @@ public class DBManager {
 
     public ArrayList<Book> searchByTitle(String title) {
         int counter = 1;
-        ArrayList<Book> books = new ArrayList<Book>(counter);
+        ArrayList<Book> books = new ArrayList<>(counter);
         String bookIsbn = "";
         String bookTitle = "";
         String bookAuthor = "";
@@ -221,12 +221,12 @@ public class DBManager {
     }
 
     public String getUserRank() {
-        String userRank = "SELECT userPosition FROM users WHERE userName = '" + userName + "'";
+        String userRank = "SELECT userStatus FROM users WHERE userName = '" + userName + "'";
         runQuery(userRank);
         String userPosition = "student";
         try { //Try to read the query Result Set
             result.first(); //Move pointer to start
-            userRank = result.getString("userPosition");
+            userRank = result.getString("userStatus");
         } catch (SQLException e) {
             System.out.println("ERROR @getUserRank: Cannot execute read query.");
         }
@@ -249,12 +249,12 @@ public class DBManager {
     }
 
     public long getUserId() {
-        String personId = "SELECT userId FROM users WHERE userName = '" + userName + "'";
+        String personId = "SELECT id FROM users WHERE userName = '" + userName + "'";
         runQuery(personId);
         long userId = 0;
         try { //Try to read the query Result Set
             result.first(); //Move pointer to start
-            userId = result.getInt("userId");
+            userId = result.getInt("id");
             System.out.println(userId);
         } catch (SQLException e) {
             System.out.println("ERROR @getUSerId: Cannot execute read query.");
