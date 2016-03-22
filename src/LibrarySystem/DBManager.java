@@ -24,13 +24,13 @@ public class DBManager {
     private String userName;
     private String userLastName;
     private String userPosition;
-    private long userId;
+    private String userId;
     private char[] password;
 
     MySQLConnection myConnection = new MySQLConnection();
     ResultSet result;
 
-    public DBManager(String name, String lName, long id, char[] pass, String position) {
+    public DBManager(String name, String lName, String id, char[] pass, String position) {
 
         userId = id;
         userName = name;
@@ -39,27 +39,27 @@ public class DBManager {
         password = pass;
     }
 
-    public DBManager(String name, char[] pass) {
+    public DBManager(String id, char[] pass) {
 
-        userName = name;
+        userId = id;
         password = pass;
     }
 
-    public DBManager(String name) {
-        userName = name;
-    }
-
-    public DBManager(long id) {
+    public DBManager(String id ) {
         userId = id;
-
     }
+
+//    public DBManager(String name) {
+//        userId = name;
+//
+//    }
 
     public DBManager() {
 
     }
 
     public Boolean logIn() {
-        String logInQuery = "SELECT * FROM users WHERE userName = '" + userName + "'";
+        String logInQuery = "SELECT * FROM users WHERE id = '" + userId + "'";
         runQuery(logInQuery);
         int passwordLength = getPasswordLength(result);
         char[] dbPassword = new char[passwordLength];
@@ -86,7 +86,7 @@ public class DBManager {
         for (int i = 0; i < password.length; i++) {
             strPassword += Character.toString(password[i]);
         }
-        String registerQuery = "INSERT INTO users (userName, userLastName, userId, userPassword, userPosition) "
+        String registerQuery = "INSERT INTO users (userName, userLastName, id, userPassword, userStatus) "
                 + "VALUES ('" + userName + "' , '" + userLastName + "' , '" + userId + "' , '" + strPassword + "' , '" + userPosition + "');";
         Arrays.fill(password, '0');
         strPassword = "0";
@@ -107,24 +107,6 @@ public class DBManager {
         return success;
     }
 
-    public void adminReadDB() {
-        String selectAll = "SELECT userId, userName, userPosition FROM users";
-        runQuery(selectAll);
-        try { //Try to read the query Result Set
-            while (result.next()) // while there's still some more results of the query...
-            {
-                String userId = result.getString("userId");
-                String userName = result.getString("userName");
-                String userRank = result.getString("userPosition");
-
-                System.out.println("ID: " + userId + ", userName: " + userName
-                        + ", Position: " + userRank);
-            }
-        } catch (SQLException e) {
-            System.out.println("ERROR @adminReadDB: Cannot execute query.");
-        }
-    }
-
     public ArrayList<Book> searchByTitle(String title) {
         int counter = 1;
         ArrayList<Book> books = new ArrayList<>(counter);
@@ -136,7 +118,8 @@ public class DBManager {
         String bookAvaliable = "";
         int bookLoantime = 0;
         Date bookPubDate;
-        String searchTitle = "SELECT title, author, publisher, edition, isbn, pubDate, loantime, avaliable   FROM books WHERE title LIKE '" + "%" + title + "%" + "'";
+        String bookSubject = "";
+        String searchTitle = "SELECT title, author, publisher, edition, isbn, subject, pubDate, loantime, avaliable   FROM books WHERE title LIKE '" + "%" + title + "%" + "'";
 
         runQuery(searchTitle);
 
@@ -151,12 +134,41 @@ public class DBManager {
                 bookAvaliable = result.getString("avaliable");
                 bookLoantime = Integer.parseInt(result.getString("loanTime"));
                 bookPubDate = result.getDate("pubDate");
-
-                books.add(new Book(bookTitle, bookAuthor, bookPublisher, bookAvaliable, bookIsbn, bookEdition, bookLoantime, bookPubDate));
+                bookSubject = result.getString("subject");
+                books.add(new Book(bookTitle, bookAuthor, bookPublisher, bookAvaliable, bookIsbn, bookEdition, bookLoantime, bookPubDate, bookSubject));
                 counter++;
 
                 System.out.println("isbn: " + bookIsbn + ", title:" + bookTitle + ", author: " + bookAuthor
                         + ", publisher: " + bookPublisher + ", edition: " + bookEdition);
+            }
+        } catch (SQLException e) {
+            System.out.println("ERROR @adminReadDB: Cannot execute query.");
+        }
+        return books;
+    }
+
+    public ArrayList<Book> readingBooks() {
+        int counter = 1;
+        ArrayList<Book> books = new ArrayList<>(counter);
+        String bookTitle = "";
+        String bookAuthor = "";
+        String bookAvaliable = "";
+        String bookSubject = "";
+        String readings = 
+  "SELECT books.title, books.author, books.subject, books.loantime, books.avaliable FROM books  JOIN readingList ON books.isbn=readingList.isbn and  readingList.id like '"+getUserId()+"'";
+
+        runQuery(readings);
+
+        try { //Try to read the query Result Set
+            while (result.next()) // while there's still some more results of the query...
+            {
+                bookTitle = result.getString("title");
+                bookAuthor = result.getString("author");
+                bookAvaliable = result.getString("avaliable");
+                bookSubject = result.getString("subject");
+                books.add(new Book(bookTitle, bookAuthor, bookSubject, bookAvaliable));
+                counter++;
+
             }
         } catch (SQLException e) {
             System.out.println("ERROR @adminReadDB: Cannot execute query.");
@@ -189,11 +201,11 @@ public class DBManager {
     }
 
     public Boolean validateUserId() {
-        String validateID = "SELECT * FROM users WHERE userId = '" + userId + "'";
+        String validateID = "SELECT * FROM users WHERE id = '" + userId + "'";
         runQuery(validateID);
         try { //Try to read the query Result Set
             result.first(); //Move pointer to start
-            String userLogIn = result.getString("userId");
+            String userLogIn = result.getString("id");
             if (userLogIn.equals(userId)) {
                 return false; //Means UserId Exists
             }
@@ -221,9 +233,9 @@ public class DBManager {
     }
 
     public String getUserRank() {
-        String userRank = "SELECT userStatus FROM users WHERE userName = '" + userName + "'";
+        String userRank = "SELECT userStatus FROM users WHERE id = '" + userId + "'";
         runQuery(userRank);
-        String userPosition = "student";
+        String userStatus = "student";
         try { //Try to read the query Result Set
             result.first(); //Move pointer to start
             userRank = result.getString("userStatus");
@@ -235,12 +247,13 @@ public class DBManager {
 
     public String getUserLastName() {
 
-        String userLast = "SELECT userLastName FROM users WHERE userName  = '" + userName + "'";
+        String userLast = "SELECT userLastName FROM users WHERE id  LIKE '" + userId + "'";
         runQuery(userLast);
         String lastName = "ln";
         try { //Try to read the query Result Set
             result.first(); //Move pointer to start
             lastName = result.getString("userLastName");
+//            this.userLastName = lastName;
         } catch (SQLException e) {
             System.out.println("ERROR @getUserLastName: Cannot execute read query.");
         }
@@ -248,18 +261,18 @@ public class DBManager {
 
     }
 
-    public long getUserId() {
-        String personId = "SELECT id FROM users WHERE userName = '" + userName + "'";
-        runQuery(personId);
-        long userId = 0;
+    public String getUserName() {
+        String personName = "SELECT userName FROM users WHERE id = '" + userId + "'";
+        runQuery(personName);
+        String name = "";
         try { //Try to read the query Result Set
             result.first(); //Move pointer to start
-            userId = result.getInt("id");
-            System.out.println(userId);
+            name = result.getString("userName");
+            System.out.println(name);
         } catch (SQLException e) {
-            System.out.println("ERROR @getUSerId: Cannot execute read query.");
+            System.out.println("ERROR @getUserName: Cannot execute read query.");
         }
-        return userId;
+        return name;
     }
 
     private void runQuery(String theQuery) {
@@ -267,10 +280,11 @@ public class DBManager {
         result = myConnection.getResult();
     }
 
-    public String getUserName() {
-        return userName;
+    public String  getUserId() {
+        return userId;
     }
 
+    
     //Other SQL Methods
     //Other Admin Methods
 }
